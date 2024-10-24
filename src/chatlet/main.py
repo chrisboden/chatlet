@@ -138,7 +138,7 @@ class Chatlet(metaclass=MetaChatlet):
 
     def add_tool_use(self, tool_name: str, arguments: dict, result: any):
         tool_description = f"Tool '{tool_name}' was called with arguments: {arguments}. It returned: {result}"
-        self.conversation_history.append({"role": "function", "name": tool_name, "content": tool_description})
+        self.conversation_history.append({"role": "tool", "name": tool_name, "content": tool_description})
 
     def _prepare_messages(self):
         messages = self.conversation_history.copy()
@@ -147,7 +147,7 @@ class Chatlet(metaclass=MetaChatlet):
         
         # Change "function" roles to "assistant" for API compatibility
         for message in messages:
-            if message["role"] == "function":
+            if message["role"] == "tool":
                 message["role"] = "assistant"
         
         return messages
